@@ -1,7 +1,7 @@
 package com.example.mindmap.map.model
 
-import com.example.mindmap.map.data.FacilityData
 import com.example.mindmap.map.data.NaverSearchResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
@@ -14,6 +14,9 @@ interface NaverSearchService {
         @Query("query") query: String,
         @Query("display") display: Int = 20,
         @Query("start") start: Int = 1,
-        @Query("sort") sort: String = "random"
-    ): NaverSearchResponse
+        @Query("sort") sort: String = "random",
+        @Query("x") longitude: Double,
+        @Query("y") latitude: Double,
+        @Query("radius") radius: Int = 20000
+    ): Response<NaverSearchResponse>
 }

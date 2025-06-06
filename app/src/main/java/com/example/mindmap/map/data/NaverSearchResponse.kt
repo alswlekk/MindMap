@@ -1,10 +1,11 @@
 package com.example.mindmap.map.data
 
-import com.example.mindmap.map.model.getOpenHours
+
 import com.naver.maps.geometry.LatLng
+import getOpenHours
 
 data class NaverSearchResponse(
-    val items: List<NaverPlaceItem>
+    val items: List<NaverPlaceItem>?
 )
 
 data class NaverPlaceItem(
@@ -35,6 +36,6 @@ suspend fun NaverPlaceItem.toFacilityData() : FacilityData {
         location = LatLng(mapy.toDouble(), mapx.toDouble()),
         // 운영시간은 크롤링으로 받아올 예정
         operatingHours = operatingHours,
-        website = websiteLink,
+        website = link,
     )
 }

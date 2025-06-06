@@ -50,13 +50,13 @@ import com.naver.maps.map.overlay.OverlayImage
 fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, phone : String, location : LatLng, operatingHours : String?=null, website: String?=null,  modifier: Modifier = Modifier, onBack: () -> Unit = {}) { // 병원 정보를 파라미터로 받아줘야 함
     val context = LocalContext.current
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition(LatLng(37.5408, 127.0793), 15.0)
+        position = CameraPosition(location, 15.0)
     }
 
     val mapProperties = MapProperties(
         locationTrackingMode = LocationTrackingMode.None,
         isTrafficLayerGroupEnabled = false,
-        isLiteModeEnabled = true
+        isLiteModeEnabled = false
     )
 
     val mapUiSettings = MapUiSettings(
@@ -68,6 +68,7 @@ fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, 
     Box(
         modifier = modifier
             .fillMaxSize()
+            .padding(top = 23.dp)
     ) {
 
         Column(
@@ -90,7 +91,7 @@ fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, 
              {
                 NaverMap(
                     modifier = Modifier
-                        .width(309.dp)
+                        .fillMaxWidth()
                         .height(239.dp),
                     properties = mapProperties,
                     uiSettings = mapUiSettings,
@@ -155,11 +156,13 @@ fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, 
                             .padding(start = 18.dp),
                         verticalArrangement = Arrangement.spacedBy(22.dp)
                     ) {
-                        Text(text = address, fontSize = 20.sp, fontWeight = FontWeight.Bold) // 병원 위치 받아와서 출력하도록 수정 필요
-                        if (operatingHours != null)
-                            Text(text = operatingHours.toString(), fontSize = 20.sp, fontWeight = FontWeight.Bold) // 병원 운영시간 받아와서 출력하도록 수정 필요
-                        Text(text = phone, fontSize = 20.sp, fontWeight = FontWeight.Bold) // 병원 전화번호 받아와서 출력하도록 수정 필요
-                        if (website != null)
+                        Text(text = address, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                        if (operatingHours != null && operatingHours.equals("null").not())
+                            Text(text = operatingHours.toString(), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                        else
+                            Text(text = "운영시간 정보가 없습니다.", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                        Text(text = phone, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                        if (website != null && website.equals("null").not())
                             Text(text = website.toString(), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color(0xFF6480FD), modifier = Modifier.clickable {
                                 val intent = Intent(
                                     Intent.ACTION_VIEW,

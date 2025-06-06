@@ -1,9 +1,11 @@
 package com.example.mindmap.map.screen
 
 import android.Manifest
+import android.R.attr.onClick
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Location
 import android.net.ConnectivityManager
 import android.net.Network
 import android.util.Log
@@ -13,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -57,6 +60,7 @@ import com.example.mindmap.R
 import com.example.mindmap.map.component.MapItem
 import com.example.mindmap.map.component.MapTopAppBar
 import com.example.mindmap.map.data.FacilityData
+import com.example.mindmap.map.data.FacilityType
 import com.example.mindmap.map.data.fetchFacilityList
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -65,8 +69,12 @@ import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.compose.CameraPositionState
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
+import com.naver.maps.map.compose.Marker
 import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
+import com.naver.maps.map.compose.rememberMarkerState
+import com.naver.maps.map.overlay.OverlayImage
+import java.net.URLEncoder
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalNaverMapApi::class)
 @Composable
@@ -108,18 +116,32 @@ fun MapScreen(
         launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
+    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+        if (location != null) {
+            userLatLng.value = LatLng(location.latitude, location.longitude)
+        }
+    }
+
     LaunchedEffect(userLatLng.value) {
         val facilities = fetchFacilityList(
-            query = "정신건강의학과, 심리상담센터 ${userLatLng.value.latitude}, ${userLatLng.value.longitude}",
-            clientId = "네이버_CLIENT_ID",
-            clientSecret = "네이버_CLIENT_SECRET"
+            query = "정신건강의학과 심리상담센터",
+            clientId = "SruHP0YPFem0xp2cZJwA",
+            clientSecret = "cAoJ5g4qVB",
+            userLocation = userLatLng.value,
         )
-
-        val nearby = facilities.filter {
-            userLatLng.value.distanceTo(it.location) < 5000 // 반경 5km 필터링
+        Log.d("MapScreen", "API로 받은 전체 시설 개수: ${facilities.size}")
+        Log.d(
+            "MapScreen",
+            "내위치 : ${userLatLng.value.latitude}, ${userLatLng.value.longitude}, "
+        )
+        facilities.forEach { facility ->
+            val dist = calcDistanceInMeters(userLatLng.value, facility.location)
+            Log.d(
+                "MapScreen",
+                "시설 이름=\"${facility.name}\", 위도=${facility.location.latitude}, 경도=${facility.location.longitude}, 거리=${"%.1f".format(dist)}m"
+            )
         }
-
-        // 이 nearby 리스트를 상태에 저장해서 마커 찍거나 리스트에 표시
+        val nearby = facilities
         nearbyFacilitiesState.value = nearby
     }
 
@@ -145,7 +167,7 @@ fun MapScreen(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
 
-                )
+                    )
                 Spacer(modifier = Modifier.size(8.dp))
                 Box(
                     modifier = Modifier
@@ -181,19 +203,44 @@ fun MapScreen(
                 NaverMap(
                     modifier = Modifier.fillMaxSize(),
                     cameraPositionState = cameraPositionState
-                )
+                ) {
+                    nearbyFacilitiesState.value.forEach { facility ->
+                        val markerIcon =
+                            if (facility.facilityType == FacilityType.COUNSELING_CENTER) {
+                                OverlayImage.fromResource(R.drawable.ic_marker_center)
+                            } else {
+                                OverlayImage.fromResource(R.drawable.ic_marker_hospital)
+                            }
+                        val rawWebsite = facility.website ?: ""
+                        val encodedWebsite = URLEncoder.encode(rawWebsite, "UTF-8")
+                        Marker (
+                            state = rememberMarkerState(position = facility.location),
+                            captionText = facility.name,
+                            onClick = {
+                                // 마커 클릭 시 상세 화면으로 이동
+                                navController.navigate("map_detail_screen/${facility.facilityType}/${facility.name}/${facility.address}/${facility.phone}/${facility.location.latitude},${facility.location.longitude}/${facility.operatingHours}/$encodedWebsite")
+                                true
+                            },
+                            icon = markerIcon
+                        )
+                    }
+                }
             }
+            Spacer(modifier = Modifier.size(6.dp))
             // 병원 리스트 표시
             if (nearbyFacilitiesState.value.isNotEmpty()) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 26.dp)
-                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 16.dp, vertical = 20.dp)
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
                     nearbyFacilitiesState.value.forEach { facility ->
+                        val rawWebsite = facility.website ?: ""
+                        val encodedWebsite = URLEncoder.encode(rawWebsite, "UTF-8")
                         MapItem(facilityType = facility.facilityType, name = facility.name) {
-                            navController.navigate("map_detail_screen/${facility.facilityType}/${facility.name}/${facility.address}/${facility.phone}/${facility.location.latitude},${facility.location.longitude}/${facility.operatingHours}/${facility.website ?: ""}"
+                            navController.navigate("map_detail_screen/${facility.facilityType}/${facility.name}/${facility.address}/${facility.phone}/${facility.location.latitude},${facility.location.longitude}/${facility.operatingHours}/$encodedWebsite"
                             )
                         }
                     }
@@ -322,45 +369,45 @@ fun MapScreen(
             containerColor = Color(0xFF4CAF50),
         ) {
             Image(painter = painterResource(id = R.drawable.ic_my_location), contentDescription = "현재 위치로 이동", modifier = Modifier.size(40.dp),)
-            }
         }
-
-        if (showPermissionDialog.value) {
-            AlertDialog(
-                onDismissRequest = {
-                    showPermissionDialog.value = false
-                },
-                title = {
-                    Text("위치 권한이 필요합니다")
-                },
-                text = {
-                    Text("현재 위치를 사용하려면 앱 설정에서 위치 권한을 허용해주세요.")
-                },
-                confirmButton = {
-                    TextButton(onClick = {
-                        showPermissionDialog.value = false
-                        val intent = android.content.Intent(
-                            android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                            android.net.Uri.fromParts("package", context.packageName, null)
-                        )
-                        intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-                        context.startActivity(intent)
-                    }) {
-                        Text("설정으로 이동")
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = {
-                        showPermissionDialog.value = false
-                    }) {
-                        Text("취소")
-                    }
-                }
-            )
-      }
-
-
     }
+
+    if (showPermissionDialog.value) {
+        AlertDialog(
+            onDismissRequest = {
+                showPermissionDialog.value = false
+            },
+            title = {
+                Text("위치 권한이 필요합니다")
+            },
+            text = {
+                Text("현재 위치를 사용하려면 앱 설정에서 위치 권한을 허용해주세요.")
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    showPermissionDialog.value = false
+                    val intent = android.content.Intent(
+                        android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        android.net.Uri.fromParts("package", context.packageName, null)
+                    )
+                    intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+                }) {
+                    Text("설정으로 이동")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showPermissionDialog.value = false
+                }) {
+                    Text("취소")
+                }
+            }
+        )
+    }
+
+
+}
 
 
 @OptIn(ExperimentalNaverMapApi::class)
@@ -386,6 +433,19 @@ fun getCurrentLocation(
         .addOnFailureListener {
             Log.e("위치", "위치 가져오기 실패", it)
         }
+}
+
+
+fun calcDistanceInMeters(a: LatLng, b: LatLng): Float {
+    val locA = Location("").apply {
+        latitude = a.latitude
+        longitude = a.longitude
+    }
+    val locB = Location("").apply {
+        latitude = b.latitude
+        longitude = b.longitude
+    }
+    return locA.distanceTo(locB)  // 미터 단위 반환
 }
 
 @Preview

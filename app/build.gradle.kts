@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -18,6 +21,23 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+        val secretsFile = rootProject.file("secrets.properties")
+        val secretsProps = Properties()
+
+        if (secretsFile.exists()) {
+            // secrets.properties 파일이 존재할 때 로드
+            FileInputStream(secretsFile).use { fis ->
+                secretsProps.load(fis)
+            }
+        }
+
+        // 읽어온 속성에서 NAVER_CLIENT_ID, NAVER_CLIENT_SECRET 가져오기 (없으면 빈 문자열)
+        val naverClientId = secretsProps.getProperty("NAVER_CLIENT_ID", "")
+        val naverClientSecret = secretsProps.getProperty("NAVER_CLIENT_SECRET", "")
+
+        // AndroidManifest.xml 에서 ${NAVER_CLIENT_ID}, ${NAVER_CLIENT_SECRET} 로 참조할 수 있도록 설정
+        manifestPlaceholders["NAVER_CLIENT_ID"] = naverClientId
+        manifestPlaceholders["NAVER_CLIENT_SECRET"] = naverClientSecret
     }
 
     buildTypes {
