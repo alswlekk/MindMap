@@ -1,8 +1,6 @@
 package com.example.mindmap.info.uicomponents
 
 import android.Manifest
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
