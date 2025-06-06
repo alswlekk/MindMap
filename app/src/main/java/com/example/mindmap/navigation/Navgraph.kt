@@ -43,7 +43,10 @@ fun NavGraph(navController: NavHostController) {
                 phone = phone,
                 location = location,
                 operatingHours = operatingHours,
-                website = website
+                website = website,
+                onBack = {
+                    navController.navigateUp()
+                },
             )
         }
     }
