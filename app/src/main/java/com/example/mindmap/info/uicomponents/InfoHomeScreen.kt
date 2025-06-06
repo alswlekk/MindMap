@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -39,7 +40,7 @@ fun InfoHomeScreen(
 
 
     val buttonModifier = Modifier
-        .width(300.dp)
+        .width(350.dp)
         .height(60.dp)
 
     Scaffold(
@@ -79,38 +80,53 @@ fun InfoHomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFCFF7D3)
+                ),
                 modifier = buttonModifier,
                 onClick = {
                     onNavigateDeperssion()
                 }) {
                 Text(
                     "우울증 해소 팁",
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
                 )
             }
 
             Spacer(modifier = Modifier.height(40.dp))
 
             Button(
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFCFF7D3)
+                ),
                 modifier = buttonModifier,
                 onClick = {
                     onNavigateCounsel()
                 }) {
                 Text(
                     "상담 준비 팁",
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
                 )
             }
             Spacer(modifier = Modifier.height(40.dp))
 
             Button(
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFCFF7D3)
+                ),
                 modifier = buttonModifier,
                 onClick = {
                     onNavigateEmergency()
                 }) {
                 Text(
                     "🚨 긴급 연락처",
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }

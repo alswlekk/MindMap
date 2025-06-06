@@ -1,5 +1,6 @@
 package com.example.mindmap.info.uicomponents
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.week10.functions.makeCall
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,6 +36,7 @@ import androidx.navigation.NavController
 fun EmergencyCallScreen(modifier: Modifier = Modifier, navController: NavController) {
 
     val context = LocalContext.current
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -71,11 +74,8 @@ fun EmergencyCallScreen(modifier: Modifier = Modifier, navController: NavControl
             EmergencyCard(
                 title = "자살예방상담",
                 tel = "109",
-                onClick = {
-                    val number = Uri.parse("tel:109")
-                    val callIntent = Intent(Intent.ACTION_CALL, number)
-                    context.startActivity(callIntent)
-                }
+                permission = Manifest.permission.CALL_PHONE,
+                onGranted = { makeCall("109",context) }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -83,23 +83,8 @@ fun EmergencyCallScreen(modifier: Modifier = Modifier, navController: NavControl
             EmergencyCard(
                 title = "한국생명의전화",
                 tel = "1588-9191",
-                onClick = {
-                    val number = Uri.parse("tel:1588-9191")
-                    val callIntent = Intent(Intent.ACTION_CALL, number)
-                    context.startActivity(callIntent)
-                }
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            EmergencyCard(
-                title = "자살예방 상담전화",
-                tel = "1393",
-                onClick = {
-                    val number = Uri.parse("tel:1393")
-                    val callIntent = Intent(Intent.ACTION_CALL, number)
-                    context.startActivity(callIntent)
-                }
+                permission = Manifest.permission.CALL_PHONE,
+                onGranted = { makeCall("1588-9191",context) }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -107,11 +92,18 @@ fun EmergencyCallScreen(modifier: Modifier = Modifier, navController: NavControl
             EmergencyCard(
                 title = "정신건강상담전화",
                 tel = "1577-0199",
-                onClick = {
-                    val number = Uri.parse("tel:1577-0199")
-                    val callIntent = Intent(Intent.ACTION_CALL, number)
-                    context.startActivity(callIntent)
-                }
+                permission = Manifest.permission.CALL_PHONE,
+                onGranted = { makeCall("1577-0199",context) }
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            EmergencyCard(
+
+                title = "보건복지상담센터",
+                tel = "129",
+                permission = Manifest.permission.CALL_PHONE,
+                onGranted = { makeCall("129",context) }
             )
 
             Spacer(modifier = Modifier.height(40.dp))

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -30,7 +31,7 @@ fun HomeScreen(
     onNavigateInfo: () -> Unit
 ) {
     val buttonModifier = Modifier
-        .width(300.dp)
+        .width(350.dp)
         .height(60.dp)
 
     Scaffold(
@@ -67,66 +68,111 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
 
-            Button(onClick = {
+            Button(
+                onClick = {
 
-            }, modifier = buttonModifier) {
+                },
+                modifier = buttonModifier,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFCFF7D3)
+                ),
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.baseline_checklist_24),
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    "자가진단 시작하기", fontSize = 20.sp
+                    "자가진단 시작하기",
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
                 )
             }
             Spacer(modifier = Modifier.height(40.dp))
 
-            Button(onClick = {
+            Button(
+                onClick = {
 
-            }, modifier = buttonModifier) {
+                },
+                modifier = buttonModifier,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFCFF7D3)
+                ),
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.baseline_book_24),
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("내 기록 보기", fontSize = 20.sp)
+                Text("내 기록 보기",
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold)
             }
             Spacer(modifier = Modifier.height(40.dp))
 
-            Button(onClick = {
+            Button(
+                onClick = {
 
-            }, modifier = buttonModifier) {
+                },
+                modifier = buttonModifier,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFCFF7D3)
+                ),
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.baseline_location_on_24),
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("주변 상담소 찾기", fontSize = 20.sp)
+                Text("주변 상담소 찾기",
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold)
             }
             Spacer(modifier = Modifier.height(40.dp))
 
-            Button(onClick = {
-                onNavigateInfo()
+            Button(
+                onClick = {
+                    onNavigateInfo()
 
-            }, modifier = buttonModifier) {
+                },
+                modifier = buttonModifier,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFCFF7D3)
+                ),
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.baseline_info_outline_24),
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("정신건강 정보", fontSize = 20.sp)
+                Text("정신건강 정보",
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold)
             }
             Spacer(modifier = Modifier.height(40.dp))
 
-            Button(onClick = {
+            Button(
+                onClick = {
 
-            }, modifier = buttonModifier) {
+                },
+                modifier = buttonModifier,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFCFF7D3)
+                ),
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.baseline_people_outline_24),
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("소통 게시판", fontSize = 20.sp)
+                Text("소통 게시판",
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold)
             }
         }
     }

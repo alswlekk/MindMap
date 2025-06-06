@@ -1,4 +1,4 @@
-package com.example.mindmap.info.uicomponents
+package com.example.mindmap.info.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
