@@ -28,8 +28,10 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    onNavigatePost: () -> Unit,
     onNavigateInfo: () -> Unit,
-    onNavigatePost: () -> Unit
+    onNavigateSelfCheck: () -> Unit,
+    onNavigateRecord: () -> Unit
 ) {
     val buttonModifier = Modifier
         .width(350.dp)
@@ -71,7 +73,7 @@ fun HomeScreen(
 
             Button(
                 onClick = {
-
+                    onNavigateSelfCheck()
                 },
                 modifier = buttonModifier,
                 colors = ButtonDefaults.buttonColors(
@@ -94,7 +96,7 @@ fun HomeScreen(
 
             Button(
                 onClick = {
-
+                    onNavigateRecord()
                 },
                 modifier = buttonModifier,
                 colors = ButtonDefaults.buttonColors(

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 android {
@@ -56,6 +57,11 @@ dependencies {
     implementation(libs.firebase.database)
     implementation("androidx.navigation:navigation-compose:2.7.5")
     implementation(libs.accompanist.permissions)
+    implementation(libs.androidx.navigation.compose)
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
