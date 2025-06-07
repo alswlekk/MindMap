@@ -30,6 +30,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     onNavigatePost: () -> Unit,
     onNavigateInfo: () -> Unit,
+    onNavigatePost: () -> Unit,
     onNavigateSelfCheck: () -> Unit,
     onNavigateRecord: () -> Unit
 ) {

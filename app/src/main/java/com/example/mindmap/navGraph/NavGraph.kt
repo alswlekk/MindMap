@@ -22,7 +22,8 @@ fun NavGraph(
                 onNavigateInfo = { navController.navigate(Routes.Info.route)},
                 onNavigatePost = {navController.navigate(Routes.PostNav.route)},
                 onNavigateSelfCheck = { navController.navigate(Routes.SelfCheckScreen.route) },
-                onNavigateRecord = { navController.navigate(Routes.EmotionWeeklyScreen.route) }
+                onNavigateRecord = { navController.navigate(Routes.EmotionWeeklyScreen.route) },
+                onNavigatePost = {navController.navigate(Routes.PostNav.route)}
             )
         }
         InfoNavGraph(navController)
@@ -41,5 +42,6 @@ fun NavGraph(
             EmotionWeeklyScreen(navController)
         }
 
+        PostNavGraph(navController)
     }
 }
