@@ -36,7 +36,9 @@ import com.example.mindmap.Post.Service.PostListViewModelFactory
 import com.example.mindmap.ui.theme.MainColor
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -96,9 +98,12 @@ fun PostView(
                         }
                         .padding(start = 12.dp, end = 12.dp)
                 ) {
-                    val restored = LocalDateTime.parse(item.time)
+                    val restored = Instant.ofEpochMilli(item.time as Long)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime()
+
                     val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")
-                    var time: String = restored.format(formatter)
+                    val time: String = restored.format(formatter)
 
                     Spacer(modifier = Modifier.size(8.dp))
 

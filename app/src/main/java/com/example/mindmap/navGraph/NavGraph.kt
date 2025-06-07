@@ -11,18 +11,16 @@ import com.example.mindmap.uicomposable.EmotionWeeklyScreen
 import com.example.mindmap.uicomposable.SelfCheckResultScreen
 import com.example.mindmap.uicomposable.SelfCheckScreen
 
-
 @Composable
 fun NavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     NavHost(navController = navController, startDestination = Routes.Home.route) {
-
         composable(route = Routes.Home.route) {
             HomeScreen(
                 onNavigateInfo = { navController.navigate(Routes.Info.route)},
-                onNavigatePost = {navController.navigate(Routes.PostNav.route)}
+                onNavigatePost = {navController.navigate(Routes.PostNav.route)},
                 onNavigateSelfCheck = { navController.navigate(Routes.SelfCheckScreen.route) },
                 onNavigateRecord = { navController.navigate(Routes.EmotionWeeklyScreen.route) }
             )

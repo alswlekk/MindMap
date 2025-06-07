@@ -40,14 +40,18 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mindmap.R
 import com.example.mindmap.Post.Service.CommentData
+import com.example.mindmap.Post.Service.PostData
 import com.example.mindmap.Post.Service.PostDetailRepository
 import com.example.mindmap.Post.Service.PostDetailViewModel
 import com.example.mindmap.Post.Service.PostDetailViewModelFactory
 import com.example.mindmap.ui.theme.MainColor
 import com.google.firebase.Firebase
+import com.google.firebase.database.ServerValue
 import com.google.firebase.database.database
 import kotlinx.coroutines.NonCancellable.isActive
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,7 +88,7 @@ fun PostDetailView(
     }
 
     fun buildComment(): CommentData {
-        return CommentData("", content, LocalDateTime.now().toString())
+        return CommentData("", content, ServerValue.TIMESTAMP)
     }
 
     Column(
@@ -156,9 +160,13 @@ fun PostDetailView(
                     Spacer(modifier = Modifier.size(12.dp))
 
                     Spacer(modifier = Modifier.size(4.dp))
-                    val restored = LocalDateTime.parse(post.time)
+
+                    val restored = Instant.ofEpochMilli(post.time as Long)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime()
                     val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")
-                    var time: String = restored.format(formatter)
+                    val time: String = restored.format(formatter)
+
 
                     Text(
                         modifier = Modifier.align(Alignment.End),
@@ -211,9 +219,11 @@ fun PostDetailView(
                         .fillMaxWidth()
                         .padding(start = 12.dp, end = 12.dp)
                 ) {
-                    val restored = LocalDateTime.parse(item.time)
+                    val restored = Instant.ofEpochMilli(item.time as Long)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime()
                     val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")
-                    var time: String = restored.format(formatter)
+                    val time: String = restored.format(formatter)
 
                     Spacer(modifier = Modifier.size(8.dp))
                     Text(item.content, fontSize = 15.sp)

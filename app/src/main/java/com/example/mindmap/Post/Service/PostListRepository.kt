@@ -27,13 +27,15 @@ class PostListRepository(private val table: DatabaseReference) {
             Log.i("insert", "실패")
         }
     }
-
     fun getAllPosts(): Flow<List<PostData>> = callbackFlow {
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val postList = snapshot.children.mapNotNull {
                     it.getValue(PostData::class.java)
-                }.sortedByDescending { it.time }
+                }.sortedByDescending {
+                    if(it.time is Long) it.time as Long
+                    else 0L
+                }
                 trySend(postList)
             }
 

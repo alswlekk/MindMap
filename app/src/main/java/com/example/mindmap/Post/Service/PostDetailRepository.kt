@@ -54,6 +54,9 @@ class PostDetailRepository(private val table: DatabaseReference) {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val commentList = snapshot.children.mapNotNull {
                     it.getValue(CommentData::class.java)
+                }.sortedBy {
+                    if(it.time is Long) it.time as Long
+                    else 0L
                 }
                 trySend(commentList)
             }

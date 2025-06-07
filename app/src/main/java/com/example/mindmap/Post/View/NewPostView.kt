@@ -37,6 +37,7 @@ import com.example.mindmap.Post.Service.PostListViewModelFactory
 import com.example.mindmap.Post.Service.PostData
 import com.example.mindmap.ui.theme.completeColor
 import com.google.firebase.Firebase
+import com.google.firebase.database.ServerValue
 import com.google.firebase.database.database
 import java.time.LocalDateTime
 
@@ -53,9 +54,8 @@ fun NewPostView(modifier: Modifier = Modifier, onPostNavigate: () -> Unit) {
     var content by remember {
         mutableStateOf("")
     }
-
     fun buildPost(): PostData {
-        return PostData("", title, content, LocalDateTime.now().toString())
+        return PostData("", title, content, ServerValue.TIMESTAMP)
     }
 
     val isActive by remember(title, content) {
