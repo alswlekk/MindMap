@@ -24,6 +24,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +46,7 @@ import com.example.mindmap.Post.Service.PostDetailViewModelFactory
 import com.example.mindmap.ui.theme.MainColor
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import kotlinx.coroutines.NonCancellable.isActive
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -72,6 +74,13 @@ fun PostDetailView(
 
     var content by remember {
         mutableStateOf("")
+    }
+
+
+    val isActive by remember( content) {
+        derivedStateOf {
+            !content.isNullOrBlank()
+        }
     }
 
     fun buildComment(): CommentData {
@@ -247,7 +256,8 @@ fun PostDetailView(
                     onValueChange = { content = it },
                     textStyle = TextStyle(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
+                        fontSize = 20.sp,
+                        color = Color.Black
                     ),
                     placeholder = {
                         Text(
@@ -270,9 +280,11 @@ fun PostDetailView(
                         .padding(end = 16.dp)
                         .size(36.dp)
                         .clickable {
-                            val item = buildComment()
-                            viewModel.insertComment(item, postKey)
-                            content = ""
+                            if(isActive){
+                                val item = buildComment()
+                                viewModel.insertComment(item, postKey)
+                                content = ""
+                            }
                         },
                     painter = painterResource(id = R.drawable.outline_send_24),
                     contentDescription = "",

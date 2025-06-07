@@ -60,7 +60,7 @@ fun NewPostView(modifier: Modifier = Modifier, onPostNavigate: () -> Unit) {
 
     val isActive by remember(title, content) {
         derivedStateOf {
-            title.isNotEmpty() && content.isNotEmpty()
+            (!title.isNullOrBlank()) && (!content.isNullOrBlank())
         }
     }
 
@@ -128,7 +128,8 @@ fun NewPostView(modifier: Modifier = Modifier, onPostNavigate: () -> Unit) {
             onValueChange = { title = it },
             textStyle = TextStyle(
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+                fontSize = 20.sp,
+                color = Color.Black
             ),
             placeholder = {
                 Text(
@@ -153,7 +154,8 @@ fun NewPostView(modifier: Modifier = Modifier, onPostNavigate: () -> Unit) {
             value = content,
             onValueChange = { content = it },
             textStyle = TextStyle(
-                fontSize = 16.sp
+                fontSize = 16.sp,
+                color = Color.Black
             ),
             placeholder = {
                 Text(
