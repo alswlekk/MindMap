@@ -13,7 +13,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -33,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.mindmap.navigation.Routes
+import com.example.mindmap.model.Routes
 import com.example.mindmap.viewmodel.CheckSessionViewModel
 
 @Composable
@@ -42,7 +41,7 @@ fun SelfCheckScreen(
     viewModel: CheckSessionViewModel = viewModel(),
     onSubmit: (Int) -> Unit = { score ->
         viewModel.submitAnswers(score)
-        navController.navigate("${Routes.RESULT}/$score") 
+        navController.navigate("${Routes.SelfCheckResultScreen.route}/$score")
     }
 ) {
     val context = LocalContext.current

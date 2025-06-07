@@ -39,8 +39,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.mindmap.model.Routes
 import com.example.mindmap.model.SelfCheckRecord
-import com.example.mindmap.navigation.Routes
 import com.example.mindmap.util.SelfCheckEvaluator
 import com.example.mindmap.util.getLevelColor
 import com.example.mindmap.viewmodel.SelfCheckViewModel
@@ -143,7 +143,7 @@ fun SelfCheckResultScreen(
 
                 viewModel.saveRecord(record)
                 Toast.makeText(context, "기록이 저장되었습니다", Toast.LENGTH_SHORT).show()
-                navController.navigate(Routes.HOME) {
+                navController.navigate(Routes.Home.route) {
                     popUpTo(0)
                 }
             },
