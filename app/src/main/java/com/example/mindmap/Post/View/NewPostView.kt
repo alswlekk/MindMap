@@ -1,4 +1,4 @@
-package com.example.mindmap.View
+package com.example.mindmap.Post.View
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -31,10 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mindmap.R
-import com.example.mindmap.Service.PostListRepository
-import com.example.mindmap.Service.PostListViewModel
-import com.example.mindmap.Service.PostListViewModelFactory
-import com.example.mindmap.Service.PostData
+import com.example.mindmap.Post.Service.PostListRepository
+import com.example.mindmap.Post.Service.PostListViewModel
+import com.example.mindmap.Post.Service.PostListViewModelFactory
+import com.example.mindmap.Post.Service.PostData
 import com.example.mindmap.ui.theme.completeColor
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
@@ -139,8 +139,10 @@ fun NewPostView(modifier: Modifier = Modifier, onPostNavigate: () -> Unit) {
                 )
             },
             colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
             )
         )
@@ -161,8 +163,10 @@ fun NewPostView(modifier: Modifier = Modifier, onPostNavigate: () -> Unit) {
                 )
             },
             colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
             )
         )

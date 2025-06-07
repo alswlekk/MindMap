@@ -1,4 +1,4 @@
-package com.example.mindmap.Service
+package com.example.mindmap.Post.Service
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

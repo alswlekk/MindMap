@@ -1,4 +1,4 @@
-DB 저장구조
+DB 저장 구조
 
     posts
     ├ postKey1

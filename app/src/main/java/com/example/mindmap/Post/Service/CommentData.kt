@@ -1,4 +1,4 @@
-package com.example.mindmap.Service
+package com.example.mindmap.Post.Service
 
 import java.time.LocalDateTime
 

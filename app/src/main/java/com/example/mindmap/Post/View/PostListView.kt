@@ -1,6 +1,5 @@
-package com.example.mindmap.View
+package com.example.mindmap.Post.View
 
-import android.R.attr.onClick
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -31,21 +30,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mindmap.R
-import com.example.mindmap.Service.PostListRepository
-import com.example.mindmap.Service.PostListViewModel
-import com.example.mindmap.Service.PostListViewModelFactory
+import com.example.mindmap.Post.Service.PostListRepository
+import com.example.mindmap.Post.Service.PostListViewModel
+import com.example.mindmap.Post.Service.PostListViewModelFactory
 import com.example.mindmap.ui.theme.MainColor
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.math.min
 
 @Composable
 fun PostView(
     modifier: Modifier = Modifier,
     onNewPostNavigate: () -> Unit,
-    onPostDetailNavigate: (String) -> Unit
+    onPostDetailNavigate: (String) -> Unit,
+    onHomeNavigate:() -> Unit
 ) {
     val table = Firebase.database.getReference("posts")
     val viewModel: PostListViewModel =
@@ -71,6 +70,7 @@ fun PostView(
                     .padding(start = 16.dp, top = 4.dp)
                     .size(48.dp)
                     .clickable {
+                        onHomeNavigate()
                     },
                 painter = painterResource(id = R.drawable.outline_arrow_back_24),
                 contentDescription = "",

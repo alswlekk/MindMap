@@ -1,4 +1,4 @@
-package com.example.mindmap.Service
+package com.example.mindmap.Post.Service
 
 import android.util.Log
 import com.google.firebase.database.DataSnapshot

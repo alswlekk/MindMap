@@ -1,5 +1,6 @@
 package com.example.mindmap.model
 
+
 sealed class Routes(val route: String) {
     object Home : Routes(route = "Home")
     object Info : Routes("Info")
@@ -7,5 +8,8 @@ sealed class Routes(val route: String) {
     object CounselingTipsScreen: Routes(route = "Counsel")
     object DepressionTipsScreen: Routes(route = "Depression")
     object EmergencyCallScreen: Routes(route = "Emergency")
-
+    object PostNav : Routes("PostNav")
+    object Post : Routes(route = "PostList")
+    object NewPost : Routes(route = "NewPost")
+    object PostDetail : Routes(route = "PostDetail")
 }

@@ -18,10 +18,10 @@ fun NavGraph(
         composable(route = Routes.Home.route) {
             HomeScreen(
                 onNavigateInfo = { navController.navigate(Routes.Info.route)},
+                onNavigatePost = {navController.navigate(Routes.PostNav.route)}
             )
         }
-
         InfoNavGraph(navController)
-
+        PostNavGraph(navController)
     }
 }
