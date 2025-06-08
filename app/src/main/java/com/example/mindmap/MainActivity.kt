@@ -21,9 +21,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
                 MindMapTheme {
-                    val navController = rememberNavController()
-                    NavGraph(navController = navController)
-                }
+                MainScreen()
+            }
         }
 
         val clientId = BuildConfig.NAVER_CLIENT_ID
@@ -32,6 +31,7 @@ class MainActivity : ComponentActivity() {
             NaverMapSdk.getInstance(this).client = NaverMapSdk.NaverCloudPlatformClient(clientId)
         } else {
             Log.e("MainActivity", "Naver Map Client ID가 설정되지 않았습니다!")
+
         }
     }
 }

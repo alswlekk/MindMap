@@ -4,4 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.secrets.gradle.plugin) apply false
+    alias(libs.plugins.kotlin.ksp) apply false
+
 }
