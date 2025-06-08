@@ -1,11 +1,8 @@
 package com.example.mindmap.map.retrofit
 
 import android.util.Log
-import android.util.Log.e
-import androidx.compose.runtime.mutableStateOf
 import com.example.mindmap.map.data.FacilityData
 import com.example.mindmap.map.data.FacilityType
-import com.example.mindmap.map.screen.calcDistanceInMeters
 import com.naver.maps.geometry.LatLng
 import okio.IOException
 import retrofit2.Retrofit

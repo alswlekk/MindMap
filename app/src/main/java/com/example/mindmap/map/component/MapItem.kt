@@ -89,7 +89,7 @@ fun MapItem(facilityType: FacilityType, name:String, modifier: Modifier = Modifi
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = name,
+                            text = name.replace("+", " "),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )

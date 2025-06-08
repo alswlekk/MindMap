@@ -29,7 +29,6 @@ fun NavGraph(navController: NavHostController) {
             val address = backStackEntry.arguments?.getString("address") ?: ""
             val phone = backStackEntry.arguments?.getString("phone") ?: ""
             val locationStr = backStackEntry.arguments?.getString("location") ?: "0.0, 0.0"
-            val operatingHours = backStackEntry.arguments?.getString("operatingHours")
             val website = backStackEntry.arguments?.getString("website")
 
             // locationStr을 LatLng로 변환
@@ -42,7 +41,6 @@ fun NavGraph(navController: NavHostController) {
                 address = address,
                 phone = phone,
                 location = location,
-                operatingHours = operatingHours,
                 website = website,
                 onBack = {
                     navController.navigateUp()

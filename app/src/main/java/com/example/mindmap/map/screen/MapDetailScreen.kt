@@ -2,6 +2,7 @@ package com.example.mindmap.map.screen
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -47,7 +48,7 @@ import com.naver.maps.map.overlay.OverlayImage
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
-fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, phone : String, location : LatLng, operatingHours : String?=null, website: String?=null,  modifier: Modifier = Modifier, onBack: () -> Unit = {}) { // 병원 정보를 파라미터로 받아줘야 함
+fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, phone : String, location : LatLng, website: String?=null,  modifier: Modifier = Modifier, onBack: () -> Unit = {}) { // 병원 정보를 파라미터로 받아줘야 함
     val context = LocalContext.current
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition(location, 15.0)
@@ -70,6 +71,7 @@ fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, 
             .fillMaxSize()
             .padding(top = 23.dp)
     ) {
+        Log.d("MapDetailScreen", "Marker position: $location, 기관 : $name, 주소: $address, 전화번호: $phone, 웹사이트: $website")
 
         Column(
             modifier = Modifier
@@ -126,7 +128,7 @@ fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, 
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = name, // 병원 정보 받아서 출력하도록 수정 필요
+                            text = name.replace("+", " "), // 병원 정보 받아서 출력하도록 수정 필요
                             fontSize = 25.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -136,7 +138,7 @@ fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, 
                             horizontalArrangement = Arrangement.Center,
                         ) {
                             MapDetailItem(R.drawable.img_map_icon, "길찾기", onClickEvent = {
-                                val encodedQuery = Uri.encode(address)
+                                val encodedQuery = Uri.encode(address.replace("+", " "))
                                 val uri = Uri.parse("https://map.naver.com/v5/search/$encodedQuery")
                                 val intent = Intent(Intent.ACTION_VIEW, uri)
                                 context.startActivity(intent)
@@ -156,13 +158,9 @@ fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, 
                             .padding(start = 18.dp),
                         verticalArrangement = Arrangement.spacedBy(22.dp)
                     ) {
-                        Text(text = address, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                        if (operatingHours != null && operatingHours.equals("null").not())
-                            Text(text = operatingHours.toString(), fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                        else
-                            Text(text = "운영시간 정보가 없습니다.", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                        Text(text = address.replace("+", " "), fontSize = 20.sp, fontWeight = FontWeight.Bold)
                         Text(text = phone, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                        if (website != null && website.equals("null").not())
+                        if (website != null && website.equals("null").not() && website.equals("www.").not())
                             Text(text = website.toString(), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color(0xFF6480FD), modifier = Modifier.clickable {
                                 val intent = Intent(
                                     Intent.ACTION_VIEW,
@@ -176,7 +174,6 @@ fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, 
             }
 
 }
-            // Add your content here
         }
     }
 
@@ -189,7 +186,6 @@ private fun MapDetailScreenPreview() {
         address = "서울시 강남구 역삼동 123-45",
         phone = "02-1234-5678",
         location = LatLng(37.5408, 127.0793),
-        operatingHours = "월-금 09:00-18:00",
         website = "https://example.com" // 예시 URL
     )
 }

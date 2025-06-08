@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.fir.declarations.builder.buildConstructor
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -71,6 +70,12 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force("com.google.guava:guava:30.1-jre") // guava 최신 버전 강제 적용
+    }
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -99,9 +104,9 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-scalars:$retrofit_version")
     implementation("com.squareup.retrofit2:converter-simplexml:2.9.0")
     implementation("com.squareup.retrofit2:converter-jaxb:2.9.0")
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -116,3 +121,5 @@ secrets {
     propertiesFileName = "secrets.properties"
     defaultPropertiesFileName = "local.defaults.properties"
 }
+
+

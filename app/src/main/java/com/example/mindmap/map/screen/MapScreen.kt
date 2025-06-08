@@ -55,8 +55,8 @@ import com.example.mindmap.map.component.MapItem
 import com.example.mindmap.map.component.MapTopAppBar
 import com.example.mindmap.map.data.FacilityData
 import com.example.mindmap.map.data.FacilityType
-import com.example.mindmap.map.retrofit.FetchMindMedApiData
-import com.example.mindmap.map.retrofit.FetchSocialDevApiData
+import com.example.mindmap.map.retrofit.FetchMindMedDataFromJson
+import com.example.mindmap.map.retrofit.FetchSocialDevDataFromJson
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.naver.maps.geometry.LatLng
@@ -89,6 +89,7 @@ fun MapScreen(
     val showPermissionDialog = remember { mutableStateOf(false) } //fab 버튼 추가 시 필요
     val nearbyFacilitiesState = remember { mutableStateOf<List<FacilityData>>(emptyList()) }
     val navController = navController
+    val markerFacilitiesState = remember { mutableStateOf<List<FacilityData>>(emptyList()) }
 
     @SuppressLint("MissingPermission")
     val launcher = rememberLauncherForActivityResult(
@@ -100,6 +101,7 @@ fun MapScreen(
                     userLatLng = userLatLng,
                     cameraPositionState = cameraPositionState
                 )
+                Log.d("위치", "위치 권한이 허용되었습니다.")
             } else {
                 Log.d("위치", "위치 권한이 거부되었습니다.")
             }
@@ -117,17 +119,24 @@ fun MapScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-        val facilities: MutableList<FacilityData> = mutableListOf()
-        facilities += FetchMindMedApiData()
-        facilities += FetchSocialDevApiData()
+    LaunchedEffect(userLatLng.value) {
+        val mindMedFacilities = FetchMindMedDataFromJson(context, "med_data.json")
+        val socialDevFacilities = FetchSocialDevDataFromJson(context, "center_data.json")
+        val facilities = mindMedFacilities + socialDevFacilities
 
+        Log.d("MapScreen", "mindMedFacilities: $mindMedFacilities")
+        Log.d("MapScreen", "socialDevFacilities: $socialDevFacilities")
         Log.d("MapScreen", "API로 받은 전체 시설 개수: ${facilities.size}")
         Log.d(
             "MapScreen",
             "내위치 : ${userLatLng.value.latitude}, ${userLatLng.value.longitude}, "
         )
-        facilities.sortBy { calcDistanceInMeters(userLatLng.value, it.location) }
+        // 거리 순으로 시설 정렬
+        val sortedFacilities = facilities.sortedWith { a, b ->
+            val distanceA = calcDistanceInMeters(userLatLng.value, a.location)
+            val distanceB = calcDistanceInMeters(userLatLng.value, b.location)
+            distanceA.compareTo(distanceB) // 거리가 가까운 순으로 비교
+        }
         facilities.forEach { facility ->
             val dist = calcDistanceInMeters(userLatLng.value, facility.location)
             Log.d(
@@ -135,9 +144,36 @@ fun MapScreen(
                 "시설 이름=\"${facility.name}\", 위도=${facility.location.latitude}, 경도=${facility.location.longitude}, 거리=${"%.1f".format(dist)}m"
             )
         }
-        val nearby = facilities
-        nearbyFacilitiesState.value = nearby
+        // 정렬된 리스트를 상태에 반영
+        nearbyFacilitiesState.value = sortedFacilities
     }
+
+    LaunchedEffect(Unit) {
+        val mindMedFacilities = FetchMindMedDataFromJson(context, "med_data.json")
+        val socialDevFacilities = FetchSocialDevDataFromJson(context, "center_data.json")
+        val facilities = mindMedFacilities + socialDevFacilities
+
+        Log.d("MapScreen", "mindMedFacilities: $mindMedFacilities")
+        Log.d("MapScreen", "socialDevFacilities: $socialDevFacilities")
+        Log.d("MapScreen", "API로 받은 전체 시설 개수: ${facilities.size}")
+        // 거리 순으로 시설 정렬
+        val sortedFacilities = facilities.sortedWith { a, b ->
+            val distanceA = calcDistanceInMeters(userLatLng.value, a.location)
+            val distanceB = calcDistanceInMeters(userLatLng.value, b.location)
+            distanceA.compareTo(distanceB)
+        }
+        facilities.forEach { facility ->
+            val dist = calcDistanceInMeters(userLatLng.value, facility.location)
+            Log.d(
+                "MapScreen",
+                "시설 이름=\"${facility.name}\", 위도=${facility.location.latitude}, 경도=${facility.location.longitude}, 거리=${"%.1f".format(dist)}m"
+            )
+        }
+        // 정렬된 리스트를 상태에 반영
+        markerFacilitiesState.value = sortedFacilities
+    }
+
+
 
     Box(modifier = modifier.fillMaxSize()) {
         Column(
@@ -190,28 +226,31 @@ fun MapScreen(
 
             Box(
                 modifier = Modifier
-                    .padding(start = 34.dp)
-                    .width(301.dp)
+                    .fillMaxWidth()
                     .height(359.dp)
+                    .padding(horizontal = 22.dp)
             ) {
                 NaverMap(
                     modifier = Modifier.fillMaxSize(),
                     cameraPositionState = cameraPositionState
                 ) {
-                    nearbyFacilitiesState.value.forEach { facility ->
+                    markerFacilitiesState.value.forEach { facility ->
                         val markerIcon =
                             if (facility.facilityType == FacilityType.COUNSELING_CENTER) {
                                 OverlayImage.fromResource(R.drawable.ic_marker_center)
                             } else {
                                 OverlayImage.fromResource(R.drawable.ic_marker_hospital)
                             }
-                        val rawWebsite = facility.website ?: ""
-                        val encodedWebsite = URLEncoder.encode(rawWebsite, "UTF-8")
+                        Log.d(
+                            "MapScreen",
+                            "마커 위치: ${facility.location.latitude}, ${facility.location.longitude}, 기관명 : ${facility.name}, 기관 유형: ${facility.facilityType}"
+                        )
                         Marker (
                             state = rememberMarkerState(position = facility.location),
-                            captionText = facility.name,
+//                            captionText = facility.name,
                             onClick = {
                                 // 마커 클릭 시 상세 화면으로 이동
+                                Log.d("MapScreen", "아이템 클릭: ${facility.name} 위도 : ${facility.location.latitude}, 경도 : ${facility.location.longitude}")
                                 val encodedName = URLEncoder.encode(facility.name, "UTF-8")
                                 val encodedAddress = URLEncoder.encode(facility.address, "UTF-8")
                                 val encodedPhone = URLEncoder.encode(facility.phone, "UTF-8")
@@ -236,8 +275,6 @@ fun MapScreen(
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
                     nearbyFacilitiesState.value.forEach { facility ->
-                        val rawWebsite = facility.website ?: ""
-                        val encodedWebsite = URLEncoder.encode(rawWebsite, "UTF-8")
                         MapItem(facilityType = facility.facilityType, name = facility.name) {
                             val encodedName = URLEncoder.encode(facility.name, "UTF-8")
                             val encodedAddress = URLEncoder.encode(facility.address, "UTF-8")
@@ -251,9 +288,11 @@ fun MapScreen(
             } else {
                 Text(
                     text = "주변에 병원이 없습니다.",
-                    fontSize = 14.sp,
+                    fontSize = 20.sp,
                     color = Color.Gray,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
                 )
             }
         }
@@ -285,12 +324,12 @@ fun MapScreen(
                             }
                             Spacer(Modifier.height(8.dp))
                             Text(
-                                "심리상담 전문가와 50분 이상의 \n" +
-                                        "상담을 통해 근본적인 원인을 찾고 \n" +
+                                "심리상담 전문가와 50분 이상의 " +
+                                        "상담을 통해 근본적인 원인을 찾고 " +
                                         "인지적/정서적 행동 변화를 할 수 있게끔 상담서비스를 제공합니다. \n" +
-                                        "상담센터는 의료 기관이 아니기때문에 \n" +
+                                        "상담센터는 의료 기관이 아니기때문에 " +
                                         "의료 보험 적용되지 않습니다.\n" +
-                                        " 그에 따라 현재 상태에 대한 진단과 \n" +
+                                        " 그에 따라 현재 상태에 대한 진단과 " +
                                         "약물처방 또한 불가합니다.",
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
@@ -316,13 +355,13 @@ fun MapScreen(
                             }
                             Spacer(Modifier.height(8.dp))
                             Text(
-                                "정신건강의학과는 의료 보험이 \n" +
+                                "정신건강의학과는 의료 보험이 " +
                                         "적용 가능한 의료 기관입니다.\n" +
-                                        "심리상담센터에 비해  \n" +
-                                        "짧은 시간(10-15분정도)동안 \n" +
-                                        "의사와의 진료를  통해\n" +
+                                        "심리상담센터에 비해 " +
+                                        "짧은 시간(10-15분정도)동안 " +
+                                        "의사와의 진료를  통해 " +
                                         " 진단이 이루어집니다.\n" +
-                                        "진료과정에서 진료 기록이 남게되며\n" +
+                                        "진료과정에서 진료 기록이 남게되며 " +
                                         "필요 시 약 처방이 이뤄집니다.",
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
@@ -450,6 +489,7 @@ fun calcDistanceInMeters(a: LatLng, b: LatLng): Float {
     }
     return locA.distanceTo(locB)  // 미터 단위 반환
 }
+
 
 @Preview
 @Composable
