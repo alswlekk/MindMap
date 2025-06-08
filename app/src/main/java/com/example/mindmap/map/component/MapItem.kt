@@ -1,11 +1,8 @@
 package com.example.mindmap.map.component
 
-import android.R.attr.fontWeight
-import android.R.attr.name
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,17 +25,23 @@ import com.example.mindmap.R
 import com.example.mindmap.map.data.FacilityType
 
 @Composable
-fun MapItem(facilityType: FacilityType, name:String, modifier: Modifier = Modifier, onClickListener : () -> Unit = {}) { // 시설 정보를 파라미터로 받도록 수정 필요
-    Box(modifier = Modifier.fillMaxWidth()
-        .background(
-            color = Color(0xFFCFF7D3),
-            shape = RoundedCornerShape(20.dp),
-        )
-        .padding(vertical = 14.dp)
-        .clickable {
-            onClickListener() // 클릭 이벤트 처리
-        }
-        ,
+fun MapItem(
+    facilityType: FacilityType,
+    name: String,
+    modifier: Modifier = Modifier,
+    onClickListener: () -> Unit = {}
+) { // 시설 정보를 파라미터로 받도록 수정 필요
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = Color(0xFFCFF7D3),
+                shape = RoundedCornerShape(20.dp),
+            )
+            .padding(vertical = 14.dp)
+            .clickable {
+                onClickListener() // 클릭 이벤트 처리
+            },
     ) {
         when (facilityType) {
             FacilityType.COUNSELING_CENTER -> {
@@ -57,12 +60,16 @@ fun MapItem(facilityType: FacilityType, name:String, modifier: Modifier = Modifi
                     )
                     Spacer(modifier = Modifier.size(7.dp))
                     Column {
-                        Text(text = "심리상담센터",
+                        Text(
+                            text = "심리상담센터",
                             fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold)
-                        Text(text = name,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = name,
                             fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold)
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }
@@ -96,8 +103,8 @@ fun MapItem(facilityType: FacilityType, name:String, modifier: Modifier = Modifi
                     }
                 }
             }
-            }
         }
+    }
 }
 
 @Preview

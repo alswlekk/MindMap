@@ -7,7 +7,6 @@ import com.example.mindmap.map.data.FacilityType
 import com.google.gson.Gson
 import com.naver.maps.geometry.LatLng
 import java.io.InputStreamReader
-import kotlin.jvm.java
 
 // Ggmindmedinst 데이터에서 JSON 파일을 읽어오는 함수
 fun loadGgmindmedinstJson(context: Context, fileName: String): String {
@@ -15,7 +14,7 @@ fun loadGgmindmedinstJson(context: Context, fileName: String): String {
     val assetManager = context.assets
     Log.d("loadGgmindmedinstJson", "파일 경로: ${assetManager.javaClass.getResource(fileName)}")
     val inputStream = assetManager.open(fileName)
-     if( inputStream == null) {
+    if (inputStream == null) {
         Log.e("loadGgmindmedinstJson", "파일을 찾을 수 없습니다: $fileName")
         return ""
     }
@@ -116,7 +115,10 @@ fun parseGgsoctydevelprehabtJsonToFacilityData(jsonString: String): List<Facilit
     val rows = jsonObject.Ggsoctydevelprehabt[1].row
     Log.d("parseGgsoctydevelprehabtJsonToFacilityData", "아이템 개수: ${rows?.size ?: 0}")
     val filteredRows = rows?.filter { row ->
-        row.INST_NM.contains("상담", ignoreCase = true) && row.INST_NM.contains("센터", ignoreCase = true)
+        row.INST_NM.contains("상담", ignoreCase = true) && row.INST_NM.contains(
+            "센터",
+            ignoreCase = true
+        )
     } ?: emptyList()
     return filteredRows.map { item ->
         FacilityData(

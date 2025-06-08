@@ -35,14 +35,6 @@ android {
                 secretsProps.load(fis)
             }
         }
-
-        // 읽어온 속성에서 NAVER_CLIENT_ID, NAVER_CLIENT_SECRET 가져오기 (없으면 빈 문자열)
-        val naverClientId = secretsProps.getProperty("NAVER_CLIENT_ID", "")
-        val naverClientSecret = secretsProps.getProperty("NAVER_CLIENT_SECRET", "")
-
-        // AndroidManifest.xml 에서 ${NAVER_CLIENT_ID}, ${NAVER_CLIENT_SECRET} 로 참조할 수 있도록 설정
-        manifestPlaceholders["NAVER_CLIENT_ID"] = naverClientId
-        manifestPlaceholders["NAVER_CLIENT_SECRET"] = naverClientSecret
     }
 
     buildTypes {

@@ -141,7 +141,11 @@ fun MapScreen(
             val dist = calcDistanceInMeters(userLatLng.value, facility.location)
             Log.d(
                 "MapScreen",
-                "시설 이름=\"${facility.name}\", 위도=${facility.location.latitude}, 경도=${facility.location.longitude}, 거리=${"%.1f".format(dist)}m"
+                "시설 이름=\"${facility.name}\", 위도=${facility.location.latitude}, 경도=${facility.location.longitude}, 거리=${
+                    "%.1f".format(
+                        dist
+                    )
+                }m"
             )
         }
         // 정렬된 리스트를 상태에 반영
@@ -166,7 +170,11 @@ fun MapScreen(
             val dist = calcDistanceInMeters(userLatLng.value, facility.location)
             Log.d(
                 "MapScreen",
-                "시설 이름=\"${facility.name}\", 위도=${facility.location.latitude}, 경도=${facility.location.longitude}, 거리=${"%.1f".format(dist)}m"
+                "시설 이름=\"${facility.name}\", 위도=${facility.location.latitude}, 경도=${facility.location.longitude}, 거리=${
+                    "%.1f".format(
+                        dist
+                    )
+                }m"
             )
         }
         // 정렬된 리스트를 상태에 반영
@@ -210,8 +218,7 @@ fun MapScreen(
                         .align(Alignment.CenterVertically)
                         .clickable(
                             onClick = { showSheet.value = true }
-                        )
-                    ,
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -245,17 +252,24 @@ fun MapScreen(
                             "MapScreen",
                             "마커 위치: ${facility.location.latitude}, ${facility.location.longitude}, 기관명 : ${facility.name}, 기관 유형: ${facility.facilityType}"
                         )
-                        Marker (
+                        Marker(
                             state = rememberMarkerState(position = facility.location),
 //                            captionText = facility.name,
                             onClick = {
                                 // 마커 클릭 시 상세 화면으로 이동
-                                Log.d("MapScreen", "아이템 클릭: ${facility.name} 위도 : ${facility.location.latitude}, 경도 : ${facility.location.longitude}")
+                                Log.d(
+                                    "MapScreen",
+                                    "아이템 클릭: ${facility.name} 위도 : ${facility.location.latitude}, 경도 : ${facility.location.longitude}"
+                                )
                                 val encodedName = URLEncoder.encode(facility.name, "UTF-8")
                                 val encodedAddress = URLEncoder.encode(facility.address, "UTF-8")
                                 val encodedPhone = URLEncoder.encode(facility.phone, "UTF-8")
-                                val encodedLocation = URLEncoder.encode("${facility.location.latitude},${facility.location.longitude}", "UTF-8")
-                                val encodedWebsite = URLEncoder.encode(facility.website ?: "", "UTF-8")
+                                val encodedLocation = URLEncoder.encode(
+                                    "${facility.location.latitude},${facility.location.longitude}",
+                                    "UTF-8"
+                                )
+                                val encodedWebsite =
+                                    URLEncoder.encode(facility.website ?: "", "UTF-8")
                                 navController.navigate("map_detail_screen/${facility.facilityType}/${encodedName}/${encodedAddress}/${encodedPhone}/${encodedLocation}/${encodedWebsite}")
                                 true
                             },
@@ -279,7 +293,10 @@ fun MapScreen(
                             val encodedName = URLEncoder.encode(facility.name, "UTF-8")
                             val encodedAddress = URLEncoder.encode(facility.address, "UTF-8")
                             val encodedPhone = URLEncoder.encode(facility.phone, "UTF-8")
-                            val encodedLocation = URLEncoder.encode("${facility.location.latitude},${facility.location.longitude}", "UTF-8")
+                            val encodedLocation = URLEncoder.encode(
+                                "${facility.location.latitude},${facility.location.longitude}",
+                                "UTF-8"
+                            )
                             val encodedWebsite = URLEncoder.encode(facility.website ?: "", "UTF-8")
                             navController.navigate("map_detail_screen/${facility.facilityType}/${encodedName}/${encodedAddress}/${encodedPhone}/${encodedLocation}/${encodedWebsite}")
                         }
@@ -310,7 +327,9 @@ fun MapScreen(
                     // 심리상담센터
                     Card(
                         colors = CardDefaults.cardColors(containerColor = Color(0xFFCFF7D3)),
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -320,7 +339,12 @@ fun MapScreen(
                                     tint = Color.Unspecified
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text("심리상담센터", fontWeight = FontWeight.Bold, fontSize = 25.sp, color = Color.Black)
+                                Text(
+                                    "심리상담센터",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 25.sp,
+                                    color = Color.Black
+                                )
                             }
                             Spacer(Modifier.height(8.dp))
                             Text(
@@ -341,7 +365,9 @@ fun MapScreen(
                     // 정신건강의학과
                     Card(
                         colors = CardDefaults.cardColors(containerColor = Color(0xFFCFF7D3)),
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -351,7 +377,12 @@ fun MapScreen(
                                     tint = Color.Unspecified
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text("정신건강의학과", fontWeight = FontWeight.Bold, fontSize = 25.sp, color = Color.Black)
+                                Text(
+                                    "정신건강의학과",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 25.sp,
+                                    color = Color.Black
+                                )
                             }
                             Spacer(Modifier.height(8.dp))
                             Text(
@@ -410,7 +441,11 @@ fun MapScreen(
                 .padding(16.dp),
             containerColor = Color(0xFF4CAF50),
         ) {
-            Image(painter = painterResource(id = R.drawable.ic_my_location), contentDescription = "현재 위치로 이동", modifier = Modifier.size(40.dp),)
+            Image(
+                painter = painterResource(id = R.drawable.ic_my_location),
+                contentDescription = "현재 위치로 이동",
+                modifier = Modifier.size(40.dp),
+            )
         }
     }
 

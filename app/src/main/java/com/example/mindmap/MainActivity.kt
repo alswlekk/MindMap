@@ -20,25 +20,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MindMapTheme {
-//                NaverMapScreen02()
-//                NaverMapScreen()
-//                MapScreen()
                 MindMapTheme {
                     val navController = rememberNavController()
                     NavGraph(navController = navController)
                 }
-            }
         }
 
-        val clientId = applicationContext
-            .packageManager
-            .getApplicationInfo(packageName, PackageManager.GET_META_DATA)
-            .metaData
-            .getString("com.naver.maps.CLIENT_ID")
-
-        Log.d("NAVER_CLIENT_ID", "Loaded: $clientId")
-        NaverMapSdk.getInstance(this).client = NaverMapSdk.NaverCloudPlatformClient(clientId!!)
+        val clientId = BuildConfig.NAVER_CLIENT_ID
+        if (clientId.isNotEmpty()) {
+            // 네이버 지도 SDK 클라이언트 설정
+            NaverMapSdk.getInstance(this).client = NaverMapSdk.NaverCloudPlatformClient(clientId)
+        } else {
+            Log.e("MainActivity", "Naver Map Client ID가 설정되지 않았습니다!")
+        }
     }
 }
 

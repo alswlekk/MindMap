@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,10 +26,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import com.example.mindmap.R
 import com.example.mindmap.map.component.MapDetailItem
 import com.example.mindmap.map.component.MapTopAppBar
-import com.example.mindmap.map.data.FacilityData
 import com.example.mindmap.map.data.FacilityType
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
@@ -42,13 +41,21 @@ import com.naver.maps.map.compose.Marker
 import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
 import com.naver.maps.map.compose.rememberMarkerState
-import androidx.core.net.toUri
 import com.naver.maps.map.overlay.OverlayImage
 
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
-fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, phone : String, location : LatLng, website: String?=null,  modifier: Modifier = Modifier, onBack: () -> Unit = {}) { // 병원 정보를 파라미터로 받아줘야 함
+fun MapDetailScreen(
+    facilityType: FacilityType,
+    name: String,
+    address: String,
+    phone: String,
+    location: LatLng,
+    website: String? = null,
+    modifier: Modifier = Modifier,
+    onBack: () -> Unit = {}
+) { // 병원 정보를 파라미터로 받아줘야 함
     val context = LocalContext.current
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition(location, 15.0)
@@ -71,14 +78,17 @@ fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, 
             .fillMaxSize()
             .padding(top = 23.dp)
     ) {
-        Log.d("MapDetailScreen", "Marker position: $location, 기관 : $name, 주소: $address, 전화번호: $phone, 웹사이트: $website")
+        Log.d(
+            "MapDetailScreen",
+            "Marker position: $location, 기관 : $name, 주소: $address, 전화번호: $phone, 웹사이트: $website"
+        )
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 23.dp),
 
-        ) {
+            ) {
             MapTopAppBar(
                 title = "병원 정보",
             ) {
@@ -90,7 +100,7 @@ fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, 
                     .fillMaxWidth()
                     .padding(horizontal = 22.dp)
             )
-             {
+            {
                 NaverMap(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -113,7 +123,8 @@ fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, 
             }
             Spacer(modifier = Modifier.size(21.dp))
             Box(
-                modifier = Modifier.padding(horizontal = 22.dp)
+                modifier = Modifier
+                    .padding(horizontal = 22.dp)
                     .background(
                         color = Color(0xFFCFF7D3),
                         shape = RoundedCornerShape(20.dp),
@@ -158,24 +169,35 @@ fun MapDetailScreen(facilityType: FacilityType, name : String, address: String, 
                             .padding(start = 18.dp),
                         verticalArrangement = Arrangement.spacedBy(22.dp)
                     ) {
-                        Text(text = address.replace("+", " "), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                        Text(
+                            text = address.replace("+", " "),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                         Text(text = phone, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                        if (website != null && website.equals("null").not() && website.equals("www.").not())
-                            Text(text = website.toString(), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color(0xFF6480FD), modifier = Modifier.clickable {
-                                val intent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    website.toUri()
-                                )
-                                context.startActivity(intent)
-                            }
+                        if (website != null && website.equals("null")
+                                .not() && website.equals("www.").not()
+                        )
+                            Text(
+                                text = website.toString(),
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF6480FD),
+                                modifier = Modifier.clickable {
+                                    val intent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        website.toUri()
+                                    )
+                                    context.startActivity(intent)
+                                }
                             )
                     }
                 }
             }
 
-}
         }
     }
+}
 
 @Preview
 @Composable
