@@ -31,7 +31,7 @@ suspend fun fetchFacilityList(
             clientSecret = clientSecret,
             query = query,
             longitude = userLocation.longitude,
-            latitude = userLocation.latitude
+            latitude = userLocation.latitude,
         )
         if (response.isSuccessful && response.body() != null) {
             // body()에서 실제 NaverSearchResponse 객체를 꺼내서,

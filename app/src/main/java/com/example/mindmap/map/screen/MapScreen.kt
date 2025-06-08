@@ -1,15 +1,10 @@
 package com.example.mindmap.map.screen
 
 import android.Manifest
-import android.R.attr.onClick
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
-import android.net.ConnectivityManager
-import android.net.Network
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -55,13 +50,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.mindmap.R
 import com.example.mindmap.map.component.MapItem
 import com.example.mindmap.map.component.MapTopAppBar
 import com.example.mindmap.map.data.FacilityData
 import com.example.mindmap.map.data.FacilityType
-import com.example.mindmap.map.data.fetchFacilityList
+import com.example.mindmap.map.retrofit.FetchMindMedApiData
+import com.example.mindmap.map.retrofit.FetchSocialDevApiData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.naver.maps.geometry.LatLng
@@ -122,18 +117,17 @@ fun MapScreen(
         }
     }
 
-    LaunchedEffect(userLatLng.value) {
-        val facilities = fetchFacilityList(
-            query = "정신건강의학과 심리상담센터",
-            clientId = "SruHP0YPFem0xp2cZJwA",
-            clientSecret = "cAoJ5g4qVB",
-            userLocation = userLatLng.value,
-        )
+    LaunchedEffect(Unit) {
+        val facilities: MutableList<FacilityData> = mutableListOf()
+        facilities += FetchMindMedApiData()
+        facilities += FetchSocialDevApiData()
+
         Log.d("MapScreen", "API로 받은 전체 시설 개수: ${facilities.size}")
         Log.d(
             "MapScreen",
             "내위치 : ${userLatLng.value.latitude}, ${userLatLng.value.longitude}, "
         )
+        facilities.sortBy { calcDistanceInMeters(userLatLng.value, it.location) }
         facilities.forEach { facility ->
             val dist = calcDistanceInMeters(userLatLng.value, facility.location)
             Log.d(
@@ -218,7 +212,12 @@ fun MapScreen(
                             captionText = facility.name,
                             onClick = {
                                 // 마커 클릭 시 상세 화면으로 이동
-                                navController.navigate("map_detail_screen/${facility.facilityType}/${facility.name}/${facility.address}/${facility.phone}/${facility.location.latitude},${facility.location.longitude}/${facility.operatingHours}/$encodedWebsite")
+                                val encodedName = URLEncoder.encode(facility.name, "UTF-8")
+                                val encodedAddress = URLEncoder.encode(facility.address, "UTF-8")
+                                val encodedPhone = URLEncoder.encode(facility.phone, "UTF-8")
+                                val encodedLocation = URLEncoder.encode("${facility.location.latitude},${facility.location.longitude}", "UTF-8")
+                                val encodedWebsite = URLEncoder.encode(facility.website ?: "", "UTF-8")
+                                navController.navigate("map_detail_screen/${facility.facilityType}/${encodedName}/${encodedAddress}/${encodedPhone}/${encodedLocation}/${encodedWebsite}")
                                 true
                             },
                             icon = markerIcon
@@ -240,8 +239,12 @@ fun MapScreen(
                         val rawWebsite = facility.website ?: ""
                         val encodedWebsite = URLEncoder.encode(rawWebsite, "UTF-8")
                         MapItem(facilityType = facility.facilityType, name = facility.name) {
-                            navController.navigate("map_detail_screen/${facility.facilityType}/${facility.name}/${facility.address}/${facility.phone}/${facility.location.latitude},${facility.location.longitude}/${facility.operatingHours}/$encodedWebsite"
-                            )
+                            val encodedName = URLEncoder.encode(facility.name, "UTF-8")
+                            val encodedAddress = URLEncoder.encode(facility.address, "UTF-8")
+                            val encodedPhone = URLEncoder.encode(facility.phone, "UTF-8")
+                            val encodedLocation = URLEncoder.encode("${facility.location.latitude},${facility.location.longitude}", "UTF-8")
+                            val encodedWebsite = URLEncoder.encode(facility.website ?: "", "UTF-8")
+                            navController.navigate("map_detail_screen/${facility.facilityType}/${encodedName}/${encodedAddress}/${encodedPhone}/${encodedLocation}/${encodedWebsite}")
                         }
                     }
                 }

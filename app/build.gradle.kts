@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.fir.declarations.builder.buildConstructor
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -11,6 +12,11 @@ plugins {
 android {
     namespace = "com.example.mindmap"
     compileSdk = 35
+
+    // buildConfig 기능 활성화
+    buildFeatures {
+        buildConfig = true
+    } // buildConfig 기능을 활성화하면, buildConfigField를 사용 가능
 
     defaultConfig {
         applicationId = "com.example.mindmap"
@@ -41,12 +47,16 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "API_KEY", "\"${project.findProperty("API_KEY")}\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_KEY", "\"${project.findProperty("API_KEY")}\"")
         }
     }
     compileOptions {
@@ -79,13 +89,19 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.jsoup)
     implementation("org.jsoup:jsoup:1.13.1")
-    val retrofit_version = "2.6.1"
+    implementation(libs.androidx.compiler)
+    val retrofit_version = "2.9.0"
 // Retrofit 라이브러리
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
 // Gson Converter 라이브러리
     implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
 // Scalars Converter 라이브러리
     implementation("com.squareup.retrofit2:converter-scalars:$retrofit_version")
+    implementation("com.squareup.retrofit2:converter-simplexml:2.9.0")
+    implementation("com.squareup.retrofit2:converter-jaxb:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -93,6 +109,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
 }
 
 secrets {

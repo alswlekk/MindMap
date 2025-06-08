@@ -8,6 +8,5 @@ data class FacilityData(
     val address : String,
     val phone : String,
     val location : LatLng,
-    val operatingHours : String? = null,
-    val website: String? = null,
+    val website: String? = null
 )
