@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -35,13 +37,13 @@ fun MapTopAppBar(
                 .align(Alignment.CenterStart)
         ) {
             Icon(
-                painter = painterResource(R.drawable.img_left_arrow),
+                imageVector = Icons.AutoMirrored.Default.ArrowBack,
                 contentDescription = null,
             )
         }
         Text(
             text = title,
-            fontSize = 32.sp,
+            fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .align(Alignment.Center)

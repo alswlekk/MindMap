@@ -69,6 +69,15 @@ fun SelfCheckScreen(
             )
         }
 
+        Text(
+            text = "지난 2주간, 아래 항목들에 대해 얼마나 자주 경험했는지 체크해 주세요.",
+            fontSize = 12.sp,
+            color = Color(0xFF777777),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        )
+
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
