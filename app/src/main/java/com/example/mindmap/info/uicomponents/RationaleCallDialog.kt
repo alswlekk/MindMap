@@ -18,10 +18,16 @@ fun RationaleCallDialog(
         title = {
             Text(
                 "권한 확인 요청",
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
         },
-        text = { Text("전화 걸기 권한이 승인되어야 합니다.") },
+        text = {
+            Text(
+                "전화 걸기 권한이 승인되어야 합니다.",
+                color = Color.Black
+            )
+        },
         confirmButton = {
             Button(
                 onClick = onConfirm,

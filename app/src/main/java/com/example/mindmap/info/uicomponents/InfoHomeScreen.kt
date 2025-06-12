@@ -52,7 +52,8 @@ fun InfoHomeScreen(
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = ""
+                            contentDescription = "",
+                            tint = Color.Black
                         )
                     }
                 },
@@ -60,7 +61,8 @@ fun InfoHomeScreen(
                     Text(
                         "정신 건강 정보",
                         fontSize = 25.sp,
-                        fontWeight = FontWeight.ExtraBold
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.Black
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
