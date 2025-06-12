@@ -6,8 +6,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.secrets.gradle.plugin)
+    alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.kotlin.ksp)
-
 }
 
 android {
@@ -84,8 +84,11 @@ dependencies {
     implementation("com.naver.maps:map-sdk:3.21.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation(libs.naver.map.compose)
-    implementation("androidx.navigation:navigation-compose:2.7.5")
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.firebase.database)
+    implementation("androidx.navigation:navigation-compose:2.7.5")
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.material)
     implementation(libs.jsoup)
@@ -106,7 +109,6 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -114,7 +116,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
 }
 
 secrets {
