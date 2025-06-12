@@ -33,7 +33,7 @@ class SelfCheckViewModel(application: Application) : AndroidViewModel(applicatio
             repository.saveRecord(record)
 
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val cutoffDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -6) }.time.let {
+            val cutoffDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -30) }.time.let {
                 sdf.format(it)
             }
 

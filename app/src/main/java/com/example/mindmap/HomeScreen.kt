@@ -30,7 +30,8 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     onNavigateInfo: () -> Unit,
     onNavigateSelfCheck: () -> Unit,
-    onNavigateRecord: () -> Unit
+    onNavigateRecord: () -> Unit,
+    onNavigateMap: () -> Unit
 ) {
     val buttonModifier = Modifier
         .width(350.dp)
@@ -116,7 +117,7 @@ fun HomeScreen(
 
             Button(
                 onClick = {
-
+                    onNavigateMap()
                 },
                 modifier = buttonModifier,
                 colors = ButtonDefaults.buttonColors(
