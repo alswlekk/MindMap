@@ -15,24 +15,23 @@ import com.example.mindmap.uicomposable.SelfCheckResultScreen
 import com.example.mindmap.uicomposable.SelfCheckScreen
 import com.naver.maps.geometry.LatLng
 
-
 @Composable
 fun NavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     NavHost(navController = navController, startDestination = Routes.Home.route) {
-
         composable(route = Routes.Home.route) {
             HomeScreen(
                 onNavigateInfo = { navController.navigate(Routes.Info.route)},
+                onNavigatePost = {navController.navigate(Routes.PostNav.route)},
                 onNavigateSelfCheck = { navController.navigate(Routes.SelfCheckScreen.route) },
                 onNavigateRecord = { navController.navigate(Routes.EmotionWeeklyScreen.route) },
                 onNavigateMap = {navController.navigate(Routes.Map.route)}
             )
         }
-
         InfoNavGraph(navController)
+        PostNavGraph(navController)
 
         composable(route = Routes.SelfCheckScreen.route) {
             SelfCheckScreen(navController) { score ->

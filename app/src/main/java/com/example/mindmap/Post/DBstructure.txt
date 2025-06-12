@@ -1,0 +1,15 @@
+DB 저장 구조
+
+    posts
+    ├ postKey1
+    │   ├ key: "key"
+    │   ├ title: "제목"
+    │   ├ content: "내용"
+    │   ├ time: "시간"
+    │   └ comments
+    │     ├ commentKey1
+    │     │   ├ key: "key"
+    │     │   ├ content: "댓글 내용"
+    │     │   └ time: "시간"
+    │     └ commentKey2
+    └ postKey2
