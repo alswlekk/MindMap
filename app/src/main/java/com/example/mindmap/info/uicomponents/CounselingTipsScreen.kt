@@ -39,7 +39,8 @@ fun CounselingTipsScreen(modifier: Modifier = Modifier,navController: NavControl
                 title = {
                     Text("상담 준비 팁",
                         fontSize = 25.sp,
-                        fontWeight = FontWeight.ExtraBold)
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.Black)
                 },
                 navigationIcon = {
                     IconButton(onClick = {
@@ -47,7 +48,8 @@ fun CounselingTipsScreen(modifier: Modifier = Modifier,navController: NavControl
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = ""
+                            contentDescription = "",
+                            tint = Color.Black
                         )
                     }
                 },
@@ -59,9 +61,9 @@ fun CounselingTipsScreen(modifier: Modifier = Modifier,navController: NavControl
     ) { innerPadding ->
         Column(
             modifier = Modifier
+                .background(color = Color.White)
                 .padding(innerPadding)
-                .fillMaxSize()
-                .background(color = Color.White),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

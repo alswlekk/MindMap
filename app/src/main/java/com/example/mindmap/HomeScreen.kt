@@ -31,7 +31,8 @@ fun HomeScreen(
     onNavigatePost: () -> Unit,
     onNavigateInfo: () -> Unit,
     onNavigateSelfCheck: () -> Unit,
-    onNavigateRecord: () -> Unit
+    onNavigateRecord: () -> Unit,
+    onNavigateMap: () -> Unit
 ) {
     val buttonModifier = Modifier
         .width(350.dp)
@@ -44,7 +45,8 @@ fun HomeScreen(
                     Text(
                         "Home",
                         fontSize = 25.sp,
-                        fontWeight = FontWeight.ExtraBold
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.Black
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -55,17 +57,18 @@ fun HomeScreen(
     ) { innerPadding ->
         Column(
             modifier = Modifier
+                .background(color = Color.White)
                 .padding(innerPadding)
-                .fillMaxSize()
-                .background(color = Color.White),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(100.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
             Text(
                 text = "오늘 하루는 어떠셨나요?",
                 fontSize = 24.sp,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black
             )
 
             Spacer(modifier = Modifier.height(40.dp))
@@ -117,7 +120,7 @@ fun HomeScreen(
 
             Button(
                 onClick = {
-
+                    onNavigateMap()
                 },
                 modifier = buttonModifier,
                 colors = ButtonDefaults.buttonColors(

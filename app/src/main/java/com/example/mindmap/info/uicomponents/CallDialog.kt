@@ -12,18 +12,24 @@ import androidx.compose.ui.text.font.FontWeight
 fun CallDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
-    tel:String,
-    title:String
+    tel: String,
+    title: String
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
                 "전화 걸기 확인",
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
         },
-        text = { Text("지금 $title 번호($tel)로 전화를 거시겠습니까?") },
+        text = {
+            Text(
+                "지금 $title 번호($tel)로 전화를 거시겠습니까?",
+                color = Color.Black
+            )
+        },
         confirmButton = {
             Button(
                 onClick = onConfirm,

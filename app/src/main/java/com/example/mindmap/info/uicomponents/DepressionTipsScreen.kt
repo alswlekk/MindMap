@@ -35,7 +35,8 @@ fun DepressionTipsScreen(modifier: Modifier = Modifier, navController: NavContro
                     Text(
                         "우울증 해소 팁",
                         fontSize = 25.sp,
-                        fontWeight = FontWeight.ExtraBold
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.Black
                     )
 
                 },
@@ -45,7 +46,8 @@ fun DepressionTipsScreen(modifier: Modifier = Modifier, navController: NavContro
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = ""
+                            contentDescription = "",
+                            tint = Color.Black
                         )
                     }
                 },
@@ -57,9 +59,9 @@ fun DepressionTipsScreen(modifier: Modifier = Modifier, navController: NavContro
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
+                .background(color = Color.White)
                 .padding(innerPadding)
-                .fillMaxSize()
-                .background(color = Color.White),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
 

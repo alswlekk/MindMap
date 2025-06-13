@@ -116,13 +116,15 @@ fun EmergencyCard(
             Text(
                 title,
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+                fontSize = 20.sp,
+                color = Color.Black
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
                 tel,
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 30.sp,
+                color = Color.Black,
                 textAlign = TextAlign.End,
                 modifier = Modifier.fillMaxWidth()
             )

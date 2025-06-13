@@ -42,7 +42,8 @@ fun EmergencyCallScreen(modifier: Modifier = Modifier, navController: NavControl
                     Text(
                         "긴급 연락처",
                         fontSize = 25.sp,
-                        fontWeight = FontWeight.ExtraBold
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.Black
                     )
                 },
                 navigationIcon = {
@@ -51,7 +52,8 @@ fun EmergencyCallScreen(modifier: Modifier = Modifier, navController: NavControl
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = ""
+                            contentDescription = "",
+                            tint = Color.Black
                         )
                     }
                 },
@@ -63,9 +65,9 @@ fun EmergencyCallScreen(modifier: Modifier = Modifier, navController: NavControl
     ) { innerPadding ->
         Column(
             modifier = Modifier
+                .background(color = Color.White)
                 .padding(innerPadding)
-                .fillMaxSize()
-                .background(color = Color.White),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

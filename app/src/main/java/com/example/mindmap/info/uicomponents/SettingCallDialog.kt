@@ -19,10 +19,15 @@ fun SettingsCallDialog(
         title = {
             Text(
                 "권한 필요",
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
         },
-        text = { Text("전화 기능을 사용하려면 앱 설정에서 권한을 허용해 주세요.") },
+        text = {
+            Text(
+                "전화 기능을 사용하려면 앱 설정에서 권한을 허용해 주세요.",
+                color = Color.Black)
+        },
         confirmButton = {
             Button(
                 onClick = onGoToSettings,
@@ -30,8 +35,12 @@ fun SettingsCallDialog(
                     containerColor = Color(0xFFCFF7D3)
                 )
             )
-            { Text("설정으로 이동",
-                color = Color.Black) }
+            {
+                Text(
+                    "설정으로 이동",
+                    color = Color.Black
+                )
+            }
         },
         dismissButton = {
             Button(
@@ -40,8 +49,12 @@ fun SettingsCallDialog(
                     containerColor = Color(0xFFCFF7D3)
                 )
             )
-            { Text("취소",
-                color = Color.Black)}
+            {
+                Text(
+                    "취소",
+                    color = Color.Black
+                )
+            }
         },
         containerColor = Color.White
     )

@@ -58,6 +58,7 @@ import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import java.util.Locale
@@ -99,10 +100,10 @@ fun EmotionWeeklyScreenContent(
     var selectedRecord by remember { mutableStateOf<SelfCheckRecord?>(null) }
 
     val sdf = remember { SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) }
-    val weekAgo = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -6) }.time
+    val monthAgo = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -30) }.time
 
-    val filteredGraphRecords = graphRecords.filter { sdf.parse(it.date)?.after(weekAgo) == true }
-    val filteredAllRecords = allRecords.filter { sdf.parse(it.date)?.after(weekAgo) == true }
+    val filteredGraphRecords = graphRecords.filter { sdf.parse(it.date)?.after(monthAgo) == true }
+    val filteredAllRecords = allRecords.filter { sdf.parse(it.date)?.after(monthAgo) == true }
 
     Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp)) {
         Box(
@@ -113,12 +114,12 @@ fun EmotionWeeklyScreenContent(
                 onClick = { navController.popBackStack() },
                 modifier = Modifier.align(Alignment.CenterStart)
             ) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = "뒤로가기")
+                Icon(imageVector = Icons.AutoMirrored.Default.ArrowBack, contentDescription = "뒤로가기")
             }
 
             Text(
                 text = "감정 기록",
-                fontSize = 22.sp,
+                fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.align(Alignment.Center)
             )
@@ -180,7 +181,7 @@ fun EmotionWeeklyScreenContent(
 
         if (viewMode == "graph") {
             Text(
-                "주간 감정 그래프",
+                "월간 감정 그래프",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -193,7 +194,7 @@ fun EmotionWeeklyScreenContent(
             }
         } else {
             Text(
-                "최근 7일 감정 리스트",
+                "최근 한 달 감정 리스트",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -296,8 +297,15 @@ private fun setupChart(
     records: List<SelfCheckRecord>,
     onPointSelected: (SelfCheckRecord) -> Unit
 ) {
-    val entries = records.mapIndexed { index, record ->
-        Entry(index.toFloat(), record.score.toFloat())
+    val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val baseDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -30) }.time
+
+    val entries = records.mapNotNull { record ->
+        val date = sdf.parse(record.date)
+        if (date != null) {
+            val daysFormBase = ((date.time - baseDate.time) / (1000 * 60 * 60 * 24)).toFloat()
+            Entry(daysFormBase, record.score.toFloat())
+        } else null
     }
 
     val dataSet = LineDataSet(entries, "감정 점수").apply {
@@ -312,29 +320,37 @@ private fun setupChart(
     }
 
     chart.data = LineData(dataSet)
-    chart.invalidate() // 새로 그리기 강제 호출
 
     chart.apply {
-        xAxis.isEnabled = false
-        axisLeft.axisMinimum = 0f
-        axisLeft.axisMaximum = 27f
-        axisLeft.granularity = 5f
-        axisLeft.setDrawGridLines(true)
+        xAxis.apply {
+            isEnabled = false
+        }
+
+        axisLeft.apply {
+            axisMinimum = 0f
+            axisMaximum = 27f
+            granularity = 5f
+            setDrawGridLines(true)
+        }
+
         axisRight.isEnabled = false
-        xAxis.setDrawGridLines(false)
         description.text = ""
         legend.isEnabled = false
 
         setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-                e?.x?.toInt()?.let { index ->
-                    if (index in records.indices) {
-                        onPointSelected(records[index])
+                e?.x?.let { selectedX ->
+                    val matched = records.firstOrNull {
+                        val date = sdf.parse(it.date)
+                        date != null && ((date.time - baseDate.time) / (1000 * 60 * 60 * 24)).toFloat() == selectedX
                     }
+                    matched?.let { onPointSelected(it) }
                 }
             }
 
             override fun onNothingSelected() {}
         })
+
+        invalidate()
     }
 }

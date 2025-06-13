@@ -31,10 +31,14 @@ fun TipsCard(
             Text(
                 title,
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+                fontSize = 20.sp,
+                color = Color.Black
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(description)
+            Text(
+                description,
+                color = Color.Black
+            )
         }
     }
 }
