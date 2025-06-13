@@ -81,7 +81,9 @@ fun MapScreen(
     val context = LocalContext.current
 
     val userLatLng = remember { mutableStateOf(LatLng(37.5408, 127.0793)) }
-    val cameraPositionState = rememberCameraPositionState()
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition(userLatLng.value, 15.0)
+    }
     val fusedLocationClient = remember {
         LocationServices.getFusedLocationProviderClient(context)
     }
