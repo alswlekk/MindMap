@@ -78,14 +78,13 @@ fun NewPostView(modifier: Modifier = Modifier, onPostNavigate: () -> Unit) {
             Text(
                 text = "글 쓰기",
                 modifier = Modifier.align(Alignment.Center),
-                fontSize = 36.sp,
+                fontSize = 25.sp,
                 fontWeight = FontWeight.Bold
             )
             Image(
                 modifier = Modifier
                     .align(Alignment.CenterStart)
                     .padding(start = 16.dp, top = 4.dp)
-                    .size(48.dp)
                     .clickable {
                         onPostNavigate()
                     },
