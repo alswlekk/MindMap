@@ -57,9 +57,9 @@ fun HomeScreen(
     ) { innerPadding ->
         Column(
             modifier = Modifier
+                .background(color = Color.White)
                 .padding(innerPadding)
-                .fillMaxSize()
-                .background(color = Color.White),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(40.dp))

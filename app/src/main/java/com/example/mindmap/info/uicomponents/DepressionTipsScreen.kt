@@ -59,9 +59,9 @@ fun DepressionTipsScreen(modifier: Modifier = Modifier, navController: NavContro
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
+                .background(color = Color.White)
                 .padding(innerPadding)
-                .fillMaxSize()
-                .background(color = Color.White),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
 

@@ -61,9 +61,9 @@ fun CounselingTipsScreen(modifier: Modifier = Modifier,navController: NavControl
     ) { innerPadding ->
         Column(
             modifier = Modifier
+                .background(color = Color.White)
                 .padding(innerPadding)
-                .fillMaxSize()
-                .background(color = Color.White),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
