@@ -63,14 +63,13 @@ fun PostView(
             Text(
                 text = "소통게시판",
                 modifier = Modifier.align(Alignment.Center),
-                fontSize = 36.sp,
+                fontSize = 25.sp,
                 fontWeight = FontWeight.Bold
             )
             Image(
                 modifier = Modifier
                     .align(Alignment.CenterStart)
                     .padding(start = 16.dp, top = 4.dp)
-                    .size(48.dp)
                     .clickable {
                         onHomeNavigate()
                     },
@@ -105,7 +104,7 @@ fun PostView(
                     val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")
                     val time: String = restored.format(formatter)
 
-                    Spacer(modifier = Modifier.size(8.dp))
+                    Spacer(modifier = Modifier.size(10.dp))
 
                     Text(
                         item.title, fontSize = 20.sp,
@@ -121,13 +120,13 @@ fun PostView(
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    Spacer(modifier = Modifier.size(8.dp))
+                    Spacer(modifier = Modifier.size(10.dp))
 
                     Text(
                         time, fontSize = 15.sp,
                         color = Color.Gray
                     )
-                    Spacer(modifier = Modifier.size(4.dp))
+                    Spacer(modifier = Modifier.size(6.dp))
                 }
 
                 HorizontalDivider(

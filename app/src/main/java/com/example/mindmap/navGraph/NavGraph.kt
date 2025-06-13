@@ -24,10 +24,10 @@ fun NavGraph(
         composable(route = Routes.Home.route) {
             HomeScreen(
                 onNavigateInfo = { navController.navigate(Routes.Info.route)},
-                onNavigatePost = {navController.navigate(Routes.PostNav.route)},
                 onNavigateSelfCheck = { navController.navigate(Routes.SelfCheckScreen.route) },
                 onNavigateRecord = { navController.navigate(Routes.EmotionWeeklyScreen.route) },
-                onNavigateMap = {navController.navigate(Routes.Map.route)}
+                onNavigateMap = {navController.navigate(Routes.Map.route)},
+                onNavigatePost = {navController.navigate(Routes.PostNav.route)}
             )
         }
         InfoNavGraph(navController)
