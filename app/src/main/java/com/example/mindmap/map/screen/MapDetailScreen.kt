@@ -176,7 +176,7 @@ fun MapDetailScreen(
                         )
                         Text(text = phone, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                         if (website != null && website.equals("null")
-                                .not() && website.equals("www.").not()
+                                .not() && website.equals("www.").not() && website.noHangul()
                         )
                             Text(
                                 text = website.toString(),
@@ -210,4 +210,11 @@ private fun MapDetailScreenPreview() {
         location = LatLng(37.5408, 127.0793),
         website = "https://example.com" // 예시 URL
     )
+}
+
+// 한글(자음·모음·완성형) 범위를 모두 포함하는 정규식
+private val hangulRegex = Regex("[\\u1100-\\u11FF\\u3130-\\u318F\\uAC00-\\uD7AF]")
+
+fun String.noHangul(): Boolean {
+    return !hangulRegex.containsMatchIn(this)  // 한글이 없으면 true
 }
