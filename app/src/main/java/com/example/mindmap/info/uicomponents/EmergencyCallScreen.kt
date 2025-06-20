@@ -111,7 +111,8 @@ fun EmergencyCallScreen(modifier: Modifier = Modifier, navController: NavControl
             Text(
                 "24시간 상담 가능, 익명 상담 보장",
                 fontWeight = FontWeight.Bold,
-                fontSize = 25.sp
+                fontSize = 25.sp,
+                color = Color.Black,
             )
         }
     }
